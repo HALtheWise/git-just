@@ -2,8 +2,13 @@ package main // import "github.com/HALtheWise/git-just"
 
 import (
 	"fmt"
-	"gopkg.in/src-d/go-git.v4"
 	"os"
+
+	"time"
+
+	"gopkg.in/src-d/go-git.v4"
+	. "gopkg.in/src-d/go-git.v4/_examples"
+	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
 
 func main() {
@@ -34,4 +39,46 @@ func init() {
 
 func cmdSave(args []string) {
 	fmt.Println("Saving")
+
+	dir, err := os.Getwd()
+	CheckIfError(err)
+	Info("Working in directory %s", dir)
+
+	// Opens an already existent repository.
+	r, err := git.PlainOpen(dir)
+	CheckIfError(err)
+
+	var w *git.Worktree
+
+	w, err = r.Worktree()
+	CheckIfError(err)
+
+	// Adds the new file to the staging area.
+	Info("git add main.go")
+	_, err = w.Add("main.go")
+	CheckIfError(err)
+
+	Info("git status --porcelain")
+	status, err := w.Status()
+	CheckIfError(err)
+	fmt.Println(status)
+
+	// Commits the current staging are to the repository, with the new file
+	// just created. We should provide the object.Signature of Author of the
+	// commit.
+	Info("git commit -m \"example go-git commit\"")
+	commit, err := w.Commit("example go-git commit", &git.CommitOptions{
+		Author: &object.Signature{
+			Name:  "John Doe",
+			Email: "john@doe.org",
+			When:  time.Now(),
+		},
+	})
+
+	// Prints the current HEAD to verify that all worked well.
+	Info("git show -s")
+	obj, err := r.CommitObject(commit)
+	CheckIfError(err)
+
+	fmt.Println(obj)
 }
