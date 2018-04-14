@@ -89,4 +89,7 @@ func cmdSave(args []string) {
 	CheckIfError(err)
 
 	fmt.Println(obj)
+
+	Info("git push origin")
+	r.Push(&git.PushOptions{})
 }
