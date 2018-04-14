@@ -40,6 +40,7 @@ func init() {
 }
 
 func cmdSave(args []string) {
+	const do_push = true
 	fmt.Println("Saving")
 
 	if len(args) == 0 {
@@ -90,6 +91,9 @@ func cmdSave(args []string) {
 
 	fmt.Println(obj)
 
-	Info("git push origin")
-	r.Push(&git.PushOptions{})
+	if do_push {
+		Info("git push origin")
+		err = r.Push(&git.PushOptions{})
+		CheckIfError(err)
+	}
 }
