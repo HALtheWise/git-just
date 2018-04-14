@@ -21,6 +21,9 @@ are usable by git wizards as well as novices.
         and it shall be referred to as `branch` 
 - `add` and `commit` shall no longer be two separate operations. There shall only be one set of 
         uncommited files, and they shall be the version in your filesystem.
+    - Partial commits are good for repository cleanliness,
+        and should be encouraged even without a staging area
+    - During an in-process failing merge is one exception to this rule.
 - Editing history that has not been pushed should be easy (amending, squashing, etc.) but editing 
     history that has already been pushed shall always make you feel bad.
 - If your project lives on Github, Gitlab, or another common host, we should take advantage of that.
@@ -50,3 +53,5 @@ are usable by git wizards as well as novices.
     - [] git-just system settings (GitHub login, etc...)
     - [] system aliases for git-just and subcommands
     - [] SSH keys and machine settings that matter for using git
+- [] `git just watch`: Optionally uses git to record a detailed history of file changes
+- [] `git just undo`

@@ -62,15 +62,17 @@ func cmdSave(args []string) {
 	w, err = r.Worktree()
 	CheckIfError(err)
 
-	// Adds the new file to the staging area.
-	Info("git add main.go")
-	_, err = w.Add("main.go")
-	CheckIfError(err)
-
 	Info("git status --porcelain")
 	status, err := w.Status()
 	CheckIfError(err)
 	fmt.Println(status)
+
+	// Adds the new file to the staging area.
+	for file := range status {
+		Info("git add %s", file)
+		_, err = w.Add(file)
+		CheckIfError(err)
+	}
 
 	// Commits the current staging are to the repository, with the new file
 	// just created. We should provide the object.Signature of Author of the
