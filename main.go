@@ -6,6 +6,8 @@ import (
 
 	"time"
 
+	"strings"
+
 	"gopkg.in/src-d/go-git.v4"
 	. "gopkg.in/src-d/go-git.v4/_examples"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
@@ -40,6 +42,12 @@ func init() {
 func cmdSave(args []string) {
 	fmt.Println("Saving")
 
+	if len(args) == 0 {
+		fmt.Println("Please give me a commit message! \n\tTODO: make a field")
+		return
+	}
+	message := strings.Join(args, " ")
+
 	dir, err := os.Getwd()
 	CheckIfError(err)
 	Info("Working in directory %s", dir)
@@ -66,8 +74,8 @@ func cmdSave(args []string) {
 	// Commits the current staging are to the repository, with the new file
 	// just created. We should provide the object.Signature of Author of the
 	// commit.
-	Info("git commit -m \"example go-git commit\"")
-	commit, err := w.Commit("example go-git commit", &git.CommitOptions{
+	Info("git commit -m \"%s\"", message)
+	commit, err := w.Commit(message, &git.CommitOptions{
 		Author: &object.Signature{
 			Name:  "John Doe",
 			Email: "john@doe.org",
