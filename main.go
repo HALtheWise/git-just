@@ -8,5 +8,30 @@ import (
 
 func main() {
 	_ = git.Added
-	fmt.Println("Hello World", os.Args[1:])
+	if len(os.Args) <= 1 {
+		fmt.Println("TODO: usage menu")
+		return
+	}
+	command := os.Args[1]
+	f, ok := commands[command]
+	if !ok {
+		fmt.Println("TODO: typo menu")
+		return
+	}
+
+	f(os.Args[2:])
+}
+
+type CommandFunc func([]string)
+
+var commands map[string]CommandFunc
+
+func init() {
+	commands = make(map[string]CommandFunc)
+	commands["save"] = cmdSave
+	commands["s"] = commands["save"]
+}
+
+func cmdSave(args []string) {
+	fmt.Println("Saving")
 }
