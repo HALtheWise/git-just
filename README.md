@@ -1,14 +1,22 @@
-`git just`: A more intuitive CLI subcommand for git
+`git just`: A better CLI interface for git
 ---
 # Vision
 git is a beautiful version control system, 
 and an incredibly powerful collaborative
 tool for working in teams. However, the
 suite of command line tools that come 
-out-of-the-box are not great. `git just`
+out-of-the-box are not great from a UX standpoint. `git just`
 aims to make it simpler to interact with
 git repositories for common tasks, for 
-new users and experts alike.
+new users and experts alike, and make git more fun to use.
+
+# Design goals
+- Still git
+	- Git is beautiful and powerful, and we don't want to lose that. All of the existing git tools should still work in a repository using `git just`, and the ensuing structure shouldn't be ugly.
+- Simple mental models
+	- A user should be able to accomplish everything they want with the simplest appropriate mental
+	model. That means users shouldn't have to think about the internal graph structure of git
+	unless they are trying to do something that can't be approached a simpler way.
 
 # Simplifications
 `git just` will endeavor to maintain the following invariants, to reduce the amount of mental load on the user.
@@ -18,7 +26,11 @@ are usable by git wizards as well as novices.
 - `origin/branch` should always point to the _latest thing actually available on the server_, 
         as long as you have internet access.
 - `origin/branch` and `branch` should always point to the same thing, 
-        and it shall be referred to as `branch` 
+        and it shall be referred to as `branch`, at least for beginners. 
+	- In some workflows, people want to `git just save` on their local machine 
+	and then be allowed to edit history before pushing. I personally think that having 
+	a separate unpushed branch `my-feature-wip` is a better way to encode this workflow, but 
+	this should probably be a config option.
 - `add` and `commit` shall no longer be two separate operations. There shall only be one set of 
         uncommited files, and they shall be the version in your filesystem.
     - Partial commits are good for repository cleanliness,
@@ -28,7 +40,7 @@ are usable by git wizards as well as novices.
     history that has already been pushed shall always make you feel bad.
 - If your project lives on Github, Gitlab, or another common host, we should take advantage of that.
 
-# Progress
+# Subcommand ideas
 - [] `git just download`: Downloads a git repository.
     - [] Does the right thing with URLs from Github (or others)
     - [] Prefers SSH URL's when the machine is authenticated to use them properly
